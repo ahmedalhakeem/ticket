@@ -3,15 +3,31 @@ from django.db import models
 
 # Create your models here.
 class Department(models.Model):
-   dept_name = models.CharField(max_length=64)
-class Employee(models.Model):
-    firstname = models.CharField(max_length=64)
-    lastname = models.CharField(max_length=64)
-    username = models.CharField(max_length=64, null=False, blank=False)
-    password = models.CharField(max_length=30, null=False, blank=False)
-    image = models.ImageField(upload_to='media/', null=True, blank=True)
-    dedpartment = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='dept')
-    #section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name="sect")
+   department_name = models.CharField(max_length=64, null=True, blank=True)
 
+   def __str__(self):
+      return f"{self.department_name}"
 
+class Section(models.Model):
+   section_name = models.CharField(max_length=64, null=True, blank=True)
+   dept = models.ForeignKey(Department, on_delete=models.CASCADE)
 
+   def __str__(self):
+      return f"{self.section_name}, {self.dept}"
+class User(AbstractUser):
+   deptartment = models.ForeignKey(Department, on_delete=models.CASCADE, related_name="dept_name",)
+   section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name="sect_name",) 
+
+class Problems(models.Model):
+   software = 'SW'
+   hardware = 'HW'
+   
+   select_type = [
+      (software, 'software'),
+      (hardware, 'hardware'),
+   ]
+   problem_type = models.CharField(max_length=2, choices=select_type, default=software,)
+   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="has_problem", default=None)
+
+   def __str__(self):
+      return f"{self.problem_type} by {self.user}"
