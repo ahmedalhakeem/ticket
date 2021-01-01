@@ -5,4 +5,5 @@ admin.site.register(User)
 admin.site.register(Department)
 admin.site.register(Section)
 admin.site.register(Problems)
+admin.site.register(ProblemType)
 
