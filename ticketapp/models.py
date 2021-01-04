@@ -38,7 +38,7 @@ class Problems(models.Model):
    user_solver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="has_solution", default=None)
 
    status = models.BooleanField(default=False)
-   date = models.DateTimeField(default=None, blank=True)
+   date = models.DateTimeField(default=None, blank=True, null=True)
 
    def __str__(self):
-      return f"{self.problem_type} by {self.user} on {self.user.deptartment} section {self.user.section}"
+      return f"{self.p_type} by {self.user} on {self.user.deptartment} section: {self.user.section}"

@@ -3,13 +3,14 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.db import IntegrityError
+from django.contrib.auth.decorators import login_required
 from .forms import *
 # Create your views here.
 
 def index(request):
     return render(request, "ticketapp/index.html")
 
-def login(request):
+def login_page(request):
     if request.method == "POST":
 
         username= request.POST["username"]
@@ -19,7 +20,7 @@ def login(request):
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "ticketapp/login.html")
+        return render(request, "ticketapp/login_page.html")
 
 def register(request):
     if request.method == "POST":
@@ -52,3 +53,15 @@ def register(request):
         return render(request, "ticketapp/register.html",{
             "new_user" : UserForm()
     })
+
+@login_required    
+def profile(request, user_id):
+    user = User.objects.get(pk=user_id)
+
+    return render(request, "ticketapp/user_profile.html",{
+        "user" : user
+    })
+
+def logout_page(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("index"))
