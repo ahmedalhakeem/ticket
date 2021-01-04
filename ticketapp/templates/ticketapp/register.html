@@ -9,7 +9,13 @@ Register
             {{ new_user }}
             
         </div>
-        <input type="submit" class="btn btn-primary" value="Register">
+        {% if message %}
+            <h1>{{ message }}</h1>
+            <a href="{% url 'register' %}" class="btn btn-primary">Go back</a>
+        {% else %}
+            
+            <input type="submit" class="btn btn-primary" value="Register">
+        {% endif%}
 
         
     </form>
