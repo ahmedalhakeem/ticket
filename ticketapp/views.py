@@ -10,12 +10,16 @@ def index(request):
     return render(request, "ticketapp/index.html")
 
 def login(request):
-    username= request.POST["username"]
-    password = request.POST["password"]
-    user = authenticate(username = username, password= password)
-    if user is not None: 
-        login(request, user)
-    return render(request, "ticketapp/login.html")
+    if request.method == "POST":
+
+        username= request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username = username, password= password)
+        if user is not None: 
+            login(request, user)
+            return HttpResponseRedirect(reverse("index"))
+    else:
+        return render(request, "ticketapp/login.html")
 
 def register(request):
     if request.method == "POST":
