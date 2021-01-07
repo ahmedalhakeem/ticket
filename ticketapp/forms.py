@@ -16,8 +16,8 @@ class UserForm(forms.Form):
     password = forms.CharField(label="", required=True, 
     widget=forms.PasswordInput(attrs={'class': 'form-control form-control-lg', 'placeholder': 'Password'}))
     pc_code = forms.CharField(label="", required=False, widget=forms.TextInput(attrs={'class':'form-control form-control-lg','placeholder':'enter your PC code',}))
-    deptartment = forms.ModelChoiceField(label="",queryset=Department.objects.all(), required=True, widget=forms.Select(attrs={'class': 'form-control form-control-lg', 'placeholder':'Select Department' }))
-    section = forms.ModelChoiceField(label="",queryset=Section.objects.all(), required=True, widget=forms.Select(attrs={'class': 'form-control form-control-lg', }))
+    deptartment = forms.ModelChoiceField(label="",queryset=Department.objects.all(), required=False, widget=forms.Select(attrs={'class': 'form-control form-control-lg', 'placeholder':'Select Department' }))
+    section = forms.ModelChoiceField(label="",queryset=Section.objects.all(), required=False, widget=forms.Select(attrs={'class': 'form-control form-control-lg', }))
 
 
 

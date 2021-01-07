@@ -4,6 +4,12 @@
 {% endblock%}
 
 {% block body %}
+{% if message2 %}
+<h2>{{message2}}</h2>
+{% endif %}
+{% if message1 %}
+<h2>message2:{{message2}}</h2>
+{% endif %}
 <form action="{% url 'login_page' %}" method="POST">
     {% csrf_token %}
     <div class="form-group">

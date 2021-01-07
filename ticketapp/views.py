@@ -15,10 +15,22 @@ def login_page(request):
 
         username= request.POST["username"]
         password = request.POST["password"]
-        user = authenticate(request, username = username, password= password)
-        if user is not None: 
-            login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+        user = authenticate( username = username, password= password)
+        print(user)
+        if user is not None:
+            if user.is_active:
+                
+                login(request, user)
+            
+                return HttpResponseRedirect(reverse("index"))
+            else:
+                return render(request, "ticketapp/login_page.html",{
+                    "message1": "User is not active"
+                })
+        else:
+            return render(request, "ticketapp/login_page.html",{
+                "message2" : "Invalid Username/Password"
+            })
     else:
         return render(request, "ticketapp/login_page.html")
 
