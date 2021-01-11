@@ -4,17 +4,13 @@
 {% endblock%}
 
 {% block body %}
-<<<<<<< HEAD
-{% if message2 %}
-<h2>{{message2}}</h2>
+
+{% if message %}
+<h2>{{message}}</h2>
 {% endif %}
-{% if message1 %}
-<h2>message2:{{message2}}</h2>
-{% endif %}
-<form action="{% url 'login_page' %}" method="POST">
-=======
+
 <form action="{% url 'login_view' %}" method="POST">
->>>>>>> 15e8717f075ef291824d6e07fc592b584ae0378f
+
     {% csrf_token %}
     <div class="form-group">
         <input type="text" name="username1" placeholder="Username" class="form-control">

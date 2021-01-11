@@ -9,31 +9,18 @@ from django import forms
 # Create your views here.
 
 def index(request):
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            return HttpResponseRedirect('admin')
+        if request.user.groups.filter(id=2).exists():
+            return render(request, "ticketapp/employee.html")
+        if request.user.groups.filter(id=1).exists():
+            return render(request, "ticketapp/it.html")
     return render(request, "ticketapp/index.html")
 #####
 def login_view(request):
     if request.method == "POST":
-<<<<<<< HEAD
 
-        username= request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate( username = username, password= password)
-        print(user)
-        if user is not None:
-            if user.is_active:
-                
-                login(request, user)
-            
-                return HttpResponseRedirect(reverse("index"))
-            else:
-                return render(request, "ticketapp/login_page.html",{
-                    "message1": "User is not active"
-                })
-        else:
-            return render(request, "ticketapp/login_page.html",{
-                "message2" : "Invalid Username/Password"
-            })
-=======
         username = request.POST['username1']
         password = request.POST['password1']
         print(username)
@@ -44,9 +31,13 @@ def login_view(request):
         if user is not None: 
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
->>>>>>> 15e8717f075ef291824d6e07fc592b584ae0378f
+        else:
+            return render(request, "ticketapp/login_view.html",{
+                "message": "Invalid Username/Password"
+            })
+
     else:
-        return render(request, "ticketapp/login_page.html")
+        return render(request, "ticketapp/login_view.html")
 ####
 def logout_page(request):
     logout(request)
@@ -70,10 +61,14 @@ def register(request):
             try:
                 #user = User(first_name=first_name, last_name=last_name, username = username, email=email, password=password, deptartment=department, section=section)
                 user = User.objects.create_user(username=username, email=email, first_name=first_name, password=password, deptartment=department, section=section, pc_code=pc_code)
+                if user.section == 'IT':
+                    user.groups.add(1)
+                else:
+                    user.groups.add(2)
                 user.save()
             except IntegrityError:
                 return render(request, "ticketapp/register.html", {
-                    "message" : "username already take"
+                    "message" : "username already taken"
                 })
             login(request, user)
         
@@ -86,10 +81,15 @@ def register(request):
     })
 
 @login_required    
-def profile(request, user_id):
+def it(request, user_id):
     user = User.objects.get(pk=user_id)
 
-    return render(request, "ticketapp/user_profile.html",{
+    return render(request, "ticketapp/it.html",{
         "user" : user
     })
-
+@login_required
+def employee(request, user_id):
+    user = User.objects.get(pk=user_id)
+    return render(request, "ticketapp/employee.html",{
+        "user": user
+    })
